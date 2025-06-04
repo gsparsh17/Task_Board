@@ -27,7 +27,7 @@ Make sure you have Node.js and npm (Node Package Manager) installed on your mach
 
 1.  **Clone the repository:**
     ```bash
-    git clone [YOUR_REPOSITORY_URL_HERE]
+    git clone https://github.com/gsparsh17/Task_Board
     cd task-board-app
     ```
 2.  **Install dependencies:**
