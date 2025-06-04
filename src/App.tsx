@@ -1,25 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './global.css'; // Ensure you have a global CSS file for styles
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import BoardViewPage from './pages/BoardViewPage';
+import BoardDetailPage from './pages/BoardDetailPage';
+
+// import MainLayout from './layouts/MainLayout'; // Optional: For consistent nav/footer
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      {/* <MainLayout> */}
+        <Routes>
+          <Route path="/boards" element={<BoardViewPage />} />
+          <Route path="/board/:boardId" element={<BoardDetailPage />} />
+          <Route path="*" element={<Navigate to="/boards" replace />} />
+        </Routes>
+      {/* </MainLayout> */}
+    </Router>
   );
 }
 
