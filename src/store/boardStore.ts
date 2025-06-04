@@ -1,7 +1,7 @@
 import { create, StateCreator } from 'zustand';
-import { persist } from 'zustand/middleware'; // For local storage persistence [cite: 6]
+import { persist } from 'zustand/middleware'; 
 import { BoardData, ColumnData, CardData, Priority } from '../types';
-import { v4 as uuidv4 } from 'uuid'; // For generating unique IDs
+import { v4 as uuidv4 } from 'uuid'; 
 import { devtools } from 'zustand/middleware';
 
 interface BoardState {
@@ -9,19 +9,18 @@ interface BoardState {
   columns: Record<string, ColumnData>;
   cards: Record<string, CardData>;
   boardOrder: string[];
-  columnOrders: Record<string, string[]>; // boardId -> columnId[]
-  cardOrders: Record<string, string[]>;   // columnId -> cardId[]
+  columnOrders: Record<string, string[]>; 
+  cardOrders: Record<string, string[]>;  
 
-  // Board actions
+
   addBoard: (name: string, description?: string) => void;
   getBoardDetails: (boardId: string) => { board: BoardData; columns: ColumnData[]; cards: CardData[] } | undefined;
 
-  // Column actions
+
   addColumn: (boardId: string, title: string) => void;
   editColumn: (columnId: string, newTitle: string) => void;
   deleteColumn: (columnId: string, boardId: string) => void;
 
-  // Card actions
   addCard: (columnId: string, title: string, description: string, createdBy: string, priority: Priority, dueDate: string, assignedTo: string) => void;
   editCard: (cardId: string, updates: Partial<Omit<CardData, 'id' | 'columnId'>>) => void;
   deleteCard: (cardId: string, columnId: string) => void;
@@ -37,7 +36,7 @@ type BoardStatePersist = StateCreator<
 >;
 
 export const useBoardStore = create<BoardState>()(
-  devtools(persist( // Persist state to local storage [cite: 6]
+  devtools(persist( 
     (set, get) => ({
       boards: {},
       columns: {},
@@ -49,8 +48,7 @@ export const useBoardStore = create<BoardState>()(
       addBoard: (name, description) => {
   const newBoardId = uuidv4();
   set((state) => {
-    // Only update if the board name doesn't already exist
-    if (Object.values(state.boards).some(b => b.name === name)) {
+     if (Object.values(state.boards).some(b => b.name === name)) {
       return state;
     }
     
@@ -86,7 +84,7 @@ export const useBoardStore = create<BoardState>()(
       },
 
       addColumn: (boardId, title) => {
-        if (!get().boards[boardId]) return; // Ensure board exists
+        if (!get().boards[boardId]) return;
         const newColumnId = uuidv4();
         const newColumn: ColumnData = { id: newColumnId, title, boardId };
         set((state) => ({
@@ -118,7 +116,6 @@ export const useBoardStore = create<BoardState>()(
             newColumnOrders[boardId] = newColumnOrders[boardId].filter(id => id !== columnId);
           }
           
-          // Also delete cards within this column
           const newCards = { ...state.cards };
           const newCardOrders = { ...state.cardOrders };
           (state.cardOrders[columnId] || []).forEach(cardId => {
@@ -136,7 +133,7 @@ export const useBoardStore = create<BoardState>()(
       },
 
       addCard: (columnId, title, description, createdBy, priority, dueDate, assignedTo) => {
-        if (!get().columns[columnId]) return; // Ensure column exists
+        if (!get().columns[columnId]) return; 
         const newCardId = uuidv4();
         const newCard: CardData = { id: newCardId, columnId, title, description, createdBy, priority, dueDate, assignedTo };
         set((state) => ({
@@ -180,12 +177,10 @@ export const useBoardStore = create<BoardState>()(
 
           const newCardOrders = { ...state.cardOrders };
           
-          // Remove from source column
           if (newCardOrders[sourceColumnId]) {
             newCardOrders[sourceColumnId] = newCardOrders[sourceColumnId].filter(id => id !== cardId);
           }
 
-          // Add to destination column
           if (!newCardOrders[destinationColumnId]) {
             newCardOrders[destinationColumnId] = [];
           }
@@ -208,8 +203,8 @@ export const useBoardStore = create<BoardState>()(
           const oldIndex = orderedCards.indexOf(cardId);
           if (oldIndex === -1) return {};
 
-          orderedCards.splice(oldIndex, 1); // Remove card from old position
-          orderedCards.splice(newIndex, 0, cardId); // Insert card at new position
+          orderedCards.splice(oldIndex, 1); 
+          orderedCards.splice(newIndex, 0, cardId); 
           
           return {
             cardOrders: {
@@ -221,7 +216,7 @@ export const useBoardStore = create<BoardState>()(
       }
     }),
     {
-      name: 'task-board-storage', // Name for local storage item [cite: 6]
+      name: 'task-board-storage', 
     }
   )
 )

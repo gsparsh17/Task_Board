@@ -21,19 +21,18 @@ const BoardViewPage: React.FC = () => {
   }, [newBoardName, addBoard]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-500 to-violet-500 py-10 px-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-violet-500 py-10 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-20">
-          <h1 className="md:text-5xl text-4xl font-extrabold drop-shadow-xl text-amber-300">My Boards</h1>
+          <h1 className="md:text-5xl text-4xl font-extrabold drop-shadow-xl text-amber-300 brightness-125">My Boards</h1>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-white hover:from-violet-600 text-sm md:text-lg hover:to-teal-600 text-clip font-semibold py-2 px-6 rounded-xl shadow-md transition-all"
+            className="bg-amber-300 brightness-125 hover:from-violet-600 text-sm md:text-lg hover:to-teal-600 text-clip font-semibold py-2 px-6 rounded-xl shadow-md transition-all"
           >
             + Create New Board
           </button>
         </div>
 
-        {/* Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
             <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md animate-fade-in border border-teal-100">
@@ -63,7 +62,6 @@ const BoardViewPage: React.FC = () => {
           </div>
         )}
 
-        {/* Board Cards */}
         {boards.length === 0 ? (
           <p className="text-gray-600 text-center mt-16">No boards available. Create one to get started!</p>
         ) : (

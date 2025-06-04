@@ -6,7 +6,7 @@ import { ColumnData, CardData, Priority } from '../types';
 import { FiEdit2, FiTrash2, FiPlus, FiArrowLeft } from 'react-icons/fi';
 import { MdDragIndicator } from 'react-icons/md';
 
-// Types for our card form
+
 interface CardFormData {
   title: string;
   description: string;
@@ -15,7 +15,7 @@ interface CardFormData {
   assignedTo: string;
 }
 
-// Column Component
+
 const ColumnDisplay = React.memo(({ 
   column, 
   cards,
@@ -162,7 +162,7 @@ const ColumnDisplay = React.memo(({
         <div className="mt-3 p-3 bg-slate-100 rounded-lg">
           <input
             type="text"
-            placeholder="Card title"
+            placeholder="Task Name"
             value={cardForm.title}
             onChange={(e) => setCardForm({...cardForm, title: e.target.value})}
             className="w-full p-2 border rounded mb-2"
@@ -216,7 +216,7 @@ const ColumnDisplay = React.memo(({
               onClick={handleAddCard}
               className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
             >
-              Add Card
+              Add Task
             </button>
           </div>
         </div>
@@ -225,7 +225,7 @@ const ColumnDisplay = React.memo(({
           onClick={() => setShowAddCard(true)}
           className="mt-3 w-full flex items-center justify-center p-2 text-sm text-slate-500 hover:text-blue-500 hover:bg-slate-100 rounded"
         >
-          <FiPlus className="mr-1" /> Add a card
+          <FiPlus className="mr-1" /> Add a task
         </button>
       )}
     </div>
@@ -236,7 +236,6 @@ const BoardDetailPage: React.FC = () => {
   const { boardId } = useParams<{ boardId: string }>();
   const navigate = useNavigate();
   
-  // Get store data and actions
   const {
     getBoardDetails,
     columns,
@@ -253,7 +252,6 @@ const BoardDetailPage: React.FC = () => {
     reorderCardInColumn
   } = useBoardStore();
 
-  // Memoize board details and derived data
   const boardDetails = useMemo(
     () => boardId ? getBoardDetails(boardId) : undefined,
     [boardId, getBoardDetails]
@@ -274,25 +272,21 @@ const BoardDetailPage: React.FC = () => {
     }).filter(Boolean) as { column: ColumnData; cards: CardData[] }[];
   }, [boardId, columns, columnOrders, cards, cardOrders]);
 
-  // Local state for adding columns
   const [showAddColumnForm, setShowAddColumnForm] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState('');
 
-  // Handle drag and drop
   const handleDragEnd = useCallback((result: any) => {
     const { source, destination, draggableId } = result;
     
     if (!destination) return;
     
     if (source.droppableId === destination.droppableId) {
-      // Reorder within same column
       reorderCardInColumn(
         draggableId,
         source.droppableId,
         destination.index
       );
     } else {
-      // Move to different column
       moveCard(
         draggableId,
         source.droppableId,
@@ -325,7 +319,7 @@ const BoardDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-500 to-violet-500 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-violet-500 p-6">
       <div className="max-w-7xl mx-auto">
         <button 
           onClick={() => navigate('/boards')}
@@ -335,7 +329,7 @@ const BoardDetailPage: React.FC = () => {
         </button>
         
         <div className="flex items-center mt-12 justify-between mb-12">
-          <h1 className="text-5xl font-extrabold text-amber-300">{boardDetails.board.name}</h1>
+          <h1 className="text-5xl font-extrabold text-amber-300 brightness-125">{boardDetails.board.name}</h1>
         </div>
 
         <DragDropContext onDragEnd={handleDragEnd}>
@@ -349,7 +343,7 @@ const BoardDetailPage: React.FC = () => {
                   column.id,
                   cardData.title,
                   cardData.description,
-                  "Current User", // In a real app, use actual user
+                  "Current User", 
                   cardData.priority,
                   cardData.dueDate,
                   cardData.assignedTo
@@ -392,7 +386,7 @@ const BoardDetailPage: React.FC = () => {
                   onClick={() => setShowAddColumnForm(true)}
                   className="w-full flex items-center justify-center p-3 text-slate-300 hover:text-blue-500 hover:bg-slate-100 rounded-lg border-2 border-dashed border-slate-300"
                 >
-                  <FiPlus className="mr-2" /> Add another column
+                  <FiPlus className="mr-2" /> Add another list
                 </button>
               )}
             </div>
